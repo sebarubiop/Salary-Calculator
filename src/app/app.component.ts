@@ -23,36 +23,45 @@ export class AppComponent {
   displayedColumns = ['superannuation', 'gross', 'grossSuper', 'tax', 'net', 'netSuper'];
   ELEMENT_DATA: Element[];
   dataSource;
+  error: string;
 
   calculateSalary() {
     // clean the datatable
     this.ELEMENT_DATA = [];
     this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
+    this.error = '';
     this.showSpinner = true;
     
     //Simulating a rest api request
     setTimeout(() => {
 
-      if(this.type == 0){ //Gross (i.e. $50,000)
-        this.superAmount = this.income * (this.superPercentage / 100);// (i.e. $50,000 * 9.5% = $4,750)
-        this.taxRate = this.calculateTax(this.income);// (i.e. $7,797 - after calculateTax)
-        this.netSalary = this.income - this.taxRate;// (i.e. $50,000 - $7,797 = $42,203)
-        this.netSuper = this.netSalary + this.superAmount;
-        this.ELEMENT_DATA = [
-          {superannuation: this.superAmount, gross:this.income, grossSuper:this.income+this.superAmount, tax: this.taxRate, net: this.netSalary, netSuper: this.netSuper}];
-        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
-      }else if(this.type == 1){ //Gross + SuperAnnuation
-        this.superAmount = this.income * (this.superPercentage / 100);// (i.e. $50,000 * 9.5% = $4,750)
-        this.newIncome = this.income - this.superAmount;// (i.e. $50,000 - $4,750 = $45,250)
-        this.taxRate = this.calculateTax(this.newIncome);// (i.e. $6,253.25 - after calculateTax)
-        this.netSalary = this.newIncome - this.taxRate;// (i.e. $45,250 - $6,253.25 = $38,996.75)
-        this.netSuper = this.netSalary + this.superAmount;
-        this.ELEMENT_DATA = [
-          {superannuation: this.superAmount, gross:this.newIncome, grossSuper:this.income, tax: this.taxRate, net: this.netSalary, netSuper: this.netSuper}];
-        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      } 
+      if(this.income > 0 && this.superPercentage > 0){
+        if(this.type == undefined){
+          this.error = "Please, choose a type of income.";
+        }else{
+          if(this.type == 0){ //Gross (i.e. $50,000)
+            this.superAmount = this.income * (this.superPercentage / 100);// (i.e. $50,000 * 9.5% = $4,750)
+            this.taxRate = this.calculateTax(this.income);// (i.e. $7,797 - after calculateTax)
+            this.netSalary = this.income - this.taxRate;// (i.e. $50,000 - $7,797 = $42,203)
+            this.netSuper = this.netSalary + this.superAmount;
+            this.ELEMENT_DATA = [
+              {superannuation: this.superAmount, gross:this.income, grossSuper:this.income+this.superAmount, tax: this.taxRate, net: this.netSalary, netSuper: this.netSuper}];
+            this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+    
+          }else if(this.type == 1){ //Gross + SuperAnnuation
+            this.superAmount = this.income * (this.superPercentage / 100);// (i.e. $50,000 * 9.5% = $4,750)
+            this.newIncome = this.income - this.superAmount;// (i.e. $50,000 - $4,750 = $45,250)
+            this.taxRate = this.calculateTax(this.newIncome);// (i.e. $6,253.25 - after calculateTax)
+            this.netSalary = this.newIncome - this.taxRate;// (i.e. $45,250 - $6,253.25 = $38,996.75)
+            this.netSuper = this.netSalary + this.superAmount;
+            this.ELEMENT_DATA = [
+              {superannuation: this.superAmount, gross:this.newIncome, grossSuper:this.income, tax: this.taxRate, net: this.netSalary, netSuper: this.netSuper}];
+            this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+          } 
+        } 
+      }else{
+        this.error = "Please, set a number for Income or Superannuation Percentage.";
+      }
 
       this.showSpinner = false;
       

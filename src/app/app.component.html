@@ -1,29 +1,39 @@
 <h1>{{ title }}</h1>
 
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div fxFlex>
+      <mat-form-field class="example-full-width">
+          <span matPrefix>
+            <b>$</b> &nbsp;</span>
+          <input [(ngModel)]="income" type="number" matInput min="0" placeholder="Income">
+        </mat-form-field>
+  </div>
+  <div fxFlex>
+      <mat-form-field>    
+          <input [(ngModel)]="superPercentage" type="number" matInput min="0" max="100" placeholder="Percentage">
+          <span matSuffix>
+              &nbsp;<b>%</b></span>
+        </mat-form-field>
+  </div>
+  <div fxFlex>
+      <mat-form-field>
+          <mat-select [(ngModel)]="type" placeholder="Type of Income">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let type of types" [value]="type.id">
+              {{ type.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  </div>
+</div>
 
-<mat-form-field class="example-full-width">
-  <span matPrefix>
-    <b>$</b> &nbsp;</span>
-  <input [(ngModel)]="income" type="number" matInput placeholder="Income">
-</mat-form-field>
-
-<mat-form-field>    
-    <input [(ngModel)]="superPercentage" type="number" matInput placeholder="Percentage">
-    <span matSuffix>
-        &nbsp;<b>%</b></span>
-  </mat-form-field>
-
-<mat-form-field>
-  <mat-select [(ngModel)]="type" placeholder="Type of Income">
-    <mat-option>--</mat-option>
-    <mat-option *ngFor="let type of types" [value]="type.id">
-      {{ type.name }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-
-<button mat-raised-button color="primary" (click)="calculateSalary()">Calculate</button>
-
+<button mat-raised-button color="primary" (click)="calculateSalary()"><i class="material-icons">keyboard_arrow_right</i> Calculate</button>
+<br><br>
 
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource">
@@ -33,38 +43,38 @@
 
     <!-- Superannuation Column -->
     <ng-container matColumnDef="superannuation">
-      <mat-header-cell *matHeaderCellDef> Superannuation </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.superannuation}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef><b> Superannuation </b></mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.superannuation | currency}} </mat-cell>
     </ng-container>
 
     <!-- Gross Column -->
     <ng-container matColumnDef="gross">
-        <mat-header-cell *matHeaderCellDef> Gross </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.gross}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef><b> Gross </b></mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.gross | currency}} </mat-cell>
       </ng-container>
 
       <!-- GrossSuper Column -->
     <ng-container matColumnDef="grossSuper">
-        <mat-header-cell *matHeaderCellDef> Gross + Super </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.grossSuper}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef><b> Gross + Super </b></mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.grossSuper | currency}} </mat-cell>
       </ng-container>
 
       <!-- tax Column -->
     <ng-container matColumnDef="tax">
-        <mat-header-cell *matHeaderCellDef> Tax </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.tax}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef><b> Tax </b></mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.tax | currency}} </mat-cell>
       </ng-container>
 
       <!-- net Column -->
     <ng-container matColumnDef="net">
-        <mat-header-cell *matHeaderCellDef> Net </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.net}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef><b> Net </b></mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.net | currency}} </mat-cell>
       </ng-container>
 
       <!-- netSuper Column -->
     <ng-container matColumnDef="netSuper">
-        <mat-header-cell *matHeaderCellDef> Net + Super </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.netSuper}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef><b> Net + Super </b></mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.netSuper | currency}} </mat-cell>
       </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -75,5 +85,6 @@
   <mat-spinner 
   [diameter] = "30"
   [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+  <span>{{ error }}</span>
 
 </div>
