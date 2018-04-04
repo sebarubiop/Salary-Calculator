@@ -7,7 +7,11 @@
   <input [(ngModel)]="income" type="number" matInput placeholder="Income">
 </mat-form-field>
 
-
+<mat-form-field>    
+    <input [(ngModel)]="superPercentage" type="number" matInput placeholder="Percentage">
+    <span matSuffix>
+        &nbsp;<b>%</b></span>
+  </mat-form-field>
 
 <mat-form-field>
   <mat-select [(ngModel)]="type" placeholder="Type of Income">
@@ -19,7 +23,6 @@
 </mat-form-field>
 
 <button mat-raised-button color="primary" (click)="calculateSalary()">Calculate</button>
-<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
 
 
 <div class="example-container mat-elevation-z8">
@@ -28,31 +31,49 @@
     <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+    <!-- Superannuation Column -->
+    <ng-container matColumnDef="superannuation">
+      <mat-header-cell *matHeaderCellDef> Superannuation </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.superannuation}} </mat-cell>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-    </ng-container>
+    <!-- Gross Column -->
+    <ng-container matColumnDef="gross">
+        <mat-header-cell *matHeaderCellDef> Gross </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.gross}} </mat-cell>
+      </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="weight">
-      <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-    </ng-container>
+      <!-- GrossSuper Column -->
+    <ng-container matColumnDef="grossSuper">
+        <mat-header-cell *matHeaderCellDef> Gross + Super </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.grossSuper}} </mat-cell>
+      </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="symbol">
-      <mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-    </ng-container>
+      <!-- tax Column -->
+    <ng-container matColumnDef="tax">
+        <mat-header-cell *matHeaderCellDef> Tax </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.tax}} </mat-cell>
+      </ng-container>
+
+      <!-- net Column -->
+    <ng-container matColumnDef="net">
+        <mat-header-cell *matHeaderCellDef> Net </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.net}} </mat-cell>
+      </ng-container>
+
+      <!-- netSuper Column -->
+    <ng-container matColumnDef="netSuper">
+        <mat-header-cell *matHeaderCellDef> Net + Super </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.netSuper}} </mat-cell>
+      </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    
   </mat-table>
+
+  <mat-spinner 
+  [diameter] = "30"
+  [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+
 </div>
